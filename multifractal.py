@@ -56,7 +56,7 @@ dwtc = pywt.wavedec(data, 'db2', level = limit)
 
 sumy = []   # S function calculation - square of dwt coefficients used in summation 
 
-for i in range(0, 5):
+for i in range(0, limit):
 	sumy.append(sum(map(lambda x : x*x, dwtr[i])))
 	sumy[i]/=len(dwtr[i])
 
@@ -76,7 +76,7 @@ def leaders(l, gamma, j):
 q = 2  # represents the power to which the leader wavelets will be raised
 gamma = 1  # need to be obtained from calculation haemodynamic function
 sumdy = []  
-for i in range(0, 5):
+for i in range(0, limit):
 	modarr = [math.fabs(x) for x in dwtr[i]]
 	sumdy.append(sum(map(lambda x : pow(x, q) , leaders(modarr , gamma, i))))
 	sumdy[i]/=len(dwtr[i])
