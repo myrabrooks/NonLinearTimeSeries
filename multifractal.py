@@ -76,14 +76,51 @@ def leaders(l, gamma, j):
 q = 2  # represents the power to which the leader wavelets will be raised
 gamma = 1  # need to be obtained from calculation haemodynamic function
 sumdy = []  
+leaderwav = []
 for i in range(0, limit):
 	modarr = [math.fabs(x) for x in dwtr[i]]
-	sumdy.append(sum(map(lambda x : pow(x, q) , leaders(modarr , gamma, i))))
+	leaderwav.append(leaders(modarr, gamma, i))
+	sumdy.append(sum(map(lambda x : pow(x, q) , leaderwav[i]))))
 	sumdy[i]/=len(dwtr[i])
 
 #-------------------------------------------------------------#
 
-# zeta power to be calculated in both the above cases of S value
+#zeta power calculation 
+
+zeta = 0
+logsum = np.log2(sumdy)
+for i in range(j1, j2):
+	zeta += w[i]*logsum[i]
+
+#-------------------------------------------------------------#
+
+#c1 and c2 coefficients calculation
+	
+def cumulants(data):
+	cp1 = np.average(data)
+	cp2 = np.average(np.square(data)) - np.square(cp1)
+	return cp1, cp2
+
+
+c1 = 0
+c2 = 0
+
+for i in range(j1, j2):
+	cp1,cp2 = cumulants(leaderwav[i])
+	c1 += w[i]*cp1
+	c2 += w[i]*cp2
+
+c1 = np.log2(e * c1) - gamma
+c2 = np.log2(e * c2)
+
+#-------------------------------------------------------------#
+
+#D(h) calculation and plotting
+# D(h) = 1 - (h-c1)^2/c2
+
+#-------------------------------------------------------------#
+
+
 
 
 
