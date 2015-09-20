@@ -74,7 +74,7 @@ def leaders(l, gamma, j):
 
 
 q = 2  # represents the power to which the leader wavelets will be raised
-gamma = 1  # need to be obtained from calculation haemodynamic function
+gamma = 1 
 sumdy = []  
 leaderwav = []
 for i in range(0, limit):
@@ -85,8 +85,18 @@ for i in range(0, limit):
 
 #-------------------------------------------------------------#
 
-#zeta power calculation 
+# weights calculation
+v = np.zeroes(3)
 
+for i in range(0, 3):
+	for k in range(j1, j2+1):
+		v[i] += pow(k, i) * b[k]
+
+w = np.zeroes(j2-j1+1)
+for i in range(j1, j2+1):
+	w[i] = b[i] * (v[0]*i-v[1])/(v[0]*v[2] - v[1]*v[1])
+
+#zeta power calculation 
 zeta = 0
 logsum = np.log2(sumdy)
 for i in range(j1, j2):
@@ -105,8 +115,8 @@ def cumulants(data):
 c1 = 0
 c2 = 0
 
-for i in range(j1, j2):
-	cp1,cp2 = cumulants(leaderwav[i])
+for i in range(j1, j2+1):
+	cp1,cp2 = cumulants(np.log(leaderwav[i]))
 	c1 += w[i]*cp1
 	c2 += w[i]*cp2
 
